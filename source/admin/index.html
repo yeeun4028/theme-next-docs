@@ -5,15 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>内容管理后台</title>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-</head>
-<body>
-  <script>
-    // 告诉 CMS 我们将手动初始化
-    window.CMS_MANUAL_INIT = true;
 
-    // ** 最终的正确配置 **
-    // 我们在这里定义配置, 稍后在脚本加载后使用它
-    const cmsConfig = {
+  <script>
+    window.CMS_CONFIG = {
       locale: 'zh_Hans', // 设置界面为简体中文
       backend: {
         name: "github",
@@ -46,29 +40,10 @@
         },
       ],
     };
-
-    // --- 脚本加载和初始化 ---
-
-    // 创建 script 标签
-    const script = document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/npm/decap-cms-app@^3.0.0/dist/decap-cms-app.js";
-
-    // 脚本加载成功后执行
-    script.onload = function() {
-      // 脚本加载后, window.initCMS 才可用
-      // 使用我们上面定义的配置来初始化 CMS
-      window.initCMS({ config: cmsConfig });
-    };
-
-    // 脚本加载失败后执行
-    script.onerror = function() {
-      console.error("加载 Decap CMS 脚本失败。");
-      document.body.innerHTML = "加载 Decap CMS 脚本失败。请检查网络或控制台。";
-    };
-
-    // 将脚本添加到 head 中, 开始加载
-    document.head.appendChild(script);
-
   </script>
-</body>
+
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+</head>
+<body>
+  </body>
 </html>
