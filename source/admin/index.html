@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>内容管理后台</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    // 这个脚本用于处理 Cloudflare 上的 GitHub OAuth
+    if (window.location.host.includes("pages.dev") || window.location.host.includes("blog.yeeun.dpdns.org")) {
+      const script = document.createElement("script");
+      script.src = "https://unpkg.com/@netlify/decap-cms-app@^3.0.0/dist/decap-cms-app.js";
+      document.head.appendChild(script);
+      window.CMS_MANUAL_INIT = true;
+
+      // 从 Cloudflare Pages 的 /_cf/environment 路径获取环境变量
+      fetch("/_cf/environment")
+        .then(response => response.json())
+        .then(env => {
+          // CMS 的核心配置
+          window.CMS_CONFIG = {
+            locale: 'zh_Hans', // 设置界面为简体中文
+            backend: {
+              name: "github",
+              repo: "yeeun4028/theme-next-docs", // 您的仓库
+              branch: "master", // 您的生产分支
+              auth_type: "oauth",
+              base_url: "https://api.decapcms.org",
+              client_id: env.GITHUB_CLIENT_ID, // 从 Cloudflare 环境变量读取
+            },
+            media_folder: "source/images/uploads", // 媒体（图片）上传后存放的路径
+            public_folder: "/images/uploads", // 媒体（图片）在网站上的访问路径
+
+            // 定义内容类型（“集合”）
+            collections: [
+              {
+                name: "posts", // 集合的机器名
+                label: "文章", // 集合在后台显示的名称
+                folder: "source/_posts", // 文章 .md 文件存放的文件夹
+                create: true, // 允许创建新文章
+                slug: "{{year}}-{{month}}-{{day}}-{{slug}}", // 新文章的文件名格式
+                extension: "md", // 文件扩展名
+                fields: [ // 定义文章的字段
+                  { label: "标题", name: "title", widget: "string" },
+                  { label: "发布日期", name: "date", widget: "datetime" },
+                  { label: "标签", name: "tags", widget: "list", optional: true },
+                  { label: "分类", name: "categories", widget: "list", optional: true },
+                  { label: "正文", name: "body", widget: "markdown" },
+                ],
+              },
+            ],
+          };
+          // 初始化 CMS
+          window.initCMS(window.CMS_CONFIG);
+        });
+    }
+  </script>
+</body>
+</html>
