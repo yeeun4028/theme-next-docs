@@ -26,6 +26,7 @@ skip_render:
   - robots.txt
   - animate/*
   - highlight/*
+  - 'admin/*'
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -81,6 +82,3 @@ marked:
 search:
   path: search.json
   field: all
-# Do not process the admin folder
-skip_render:
-  - 'admin/*'
